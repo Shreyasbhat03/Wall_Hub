@@ -24,15 +24,16 @@ void initState() {
   }
   @override
   Widget build(BuildContext context) {
+  final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text("Favorites",style: GoogleFonts.acme(color: Colors.white,fontSize:30,fontWeight: FontWeight.bold),),
-        backgroundColor: Colors.black,
+        title: Text("Favorites",style: theme.textTheme.titleLarge,),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation:15,
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.white),
+            icon: Icon(Icons.delete, color:theme.appBarTheme.iconTheme?.color),
             onPressed: () {
               showDialog(
                 context: context,
@@ -78,6 +79,7 @@ void initState() {
         return Center(child: Text("No favorites yet",style: TextStyle(color: Colors.white,fontSize: 20),));
       }
       return ListView.builder(
+        controller: _scrollController,
         itemCount: images.length, // Replace with your actual data length
         itemBuilder: (context,index){
           final image = images[index];
@@ -85,11 +87,11 @@ void initState() {
             children: [
               Card(
                 elevation: 5,
-                shadowColor: Colors.black,
+                shadowColor: theme.cardTheme.shadowColor,
 
                 margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                color: Colors.grey[900],
+                color: theme.cardTheme.color,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -118,9 +120,9 @@ void initState() {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if(image.photoName.isNotEmpty)
-                              Text(image.photoName, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                              Text(image.photoName, style: theme.textTheme.titleSmall),
                             if(image.photoName.isEmpty)
-                              Text("Pexel Image",  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                              Text("Pexel Image",  style: theme.textTheme.titleSmall),
                             SizedBox(height: 5),
                             Text("Photographer: ${image.photographer}", style: TextStyle(fontSize: 10,color: Colors.grey[600])),
                             SizedBox(height: 2),
@@ -150,7 +152,7 @@ void initState() {
                 right: 2,
                 top: 10,
                 child: PopupMenuButton<String>(
-                  icon: Icon(Icons.more_vert, color: Colors.white),
+                  icon: Icon(Icons.more_vert, color: theme.iconTheme.color),
                   onSelected: (value) {
                     if (value == 'delete') {
                       context.read<FavCubit>().removeFromFavorites(image.id);
@@ -180,9 +182,9 @@ void initState() {
         },);
     }
     else if(state is FavError){
-      return Center(child: Text("Error loading favorites",style: TextStyle(color: Colors.white,fontSize: 20),));
+      return Center(child: Text("Error loading favorites",style: theme.textTheme.titleLarge,));
     }
-    return Center(child: Text("Something went wrong",style: TextStyle(color: Colors.white,fontSize: 20),));
+    return Center(child: Text("Something went wrong",style: theme.textTheme.titleLarge));
 
   },
 ),

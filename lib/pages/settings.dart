@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wallpaper_app/cubits/setting/settings_cubit.dart';
+import 'package:wallpaper_app/cubits/setting/settings_state.dart';
 import 'package:wallpaper_app/widgets/switchListtile.dart';
 
 class settingsPage extends StatefulWidget {
@@ -10,22 +13,26 @@ class settingsPage extends StatefulWidget {
 }
 
 class _settingsPageState extends State<settingsPage> {
-  bool isDarkMode = false;
-  bool isNotificationsOn = true;
+bool isDarkMode = false;
+  bool isNotificationsOn = false;
   bool isAutoRotateOn = false;
   Duration interval = Duration(hours: 6);
   String category = "Nature";
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings", style: GoogleFonts.acme(color: Colors.white, fontSize: 25)),
-        backgroundColor: Colors.black,
+        title: Text("Settings", style: theme.appBarTheme.titleTextStyle),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 15,
       ),
-      backgroundColor: Colors.black,
-      body:Center(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body:BlocBuilder<SettingsCubit, SettingsState>(
+  builder: (context, state) {
+    final cubit = context.read<SettingsCubit>();
+    return Center(
         child: Column(
           children:[
             Container(
@@ -33,7 +40,7 @@ class _settingsPageState extends State<settingsPage> {
               height: 190,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
@@ -41,29 +48,39 @@ class _settingsPageState extends State<settingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("APPEARENCE", style: GoogleFonts.roboto(color: Colors.grey, fontSize: 18)),
+                    Text("APPEARENCE", style: theme.textTheme.titleMedium),
                             Material(
                               color: Colors.transparent,
                               child: SwitchListTile(
+                                tileColor: theme.cardTheme.color,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
                                 ),
-                               tileColor: Colors.grey.shade900,
-                                selectedTileColor: Colors.grey.shade900,
-                                title: Text("Dark Mode", style: GoogleFonts.acme(color: Colors.white, fontSize: 18)),
-                                value: isDarkMode,
+                                title: Text("Dark Mode" ,style: theme.textTheme.titleMedium,),
+                                value: state.isDark,
                                 onChanged: (val) {
-                                  setState(() {
-                                    isDarkMode = val;
-                                  });
-                                  print("Dark Mode toggled: $val");
-                                  isDarkMode ? print("Dark Mode enabled"):print("Light Mode enabled");
+                                  cubit.toggleTheme(val);
                                 },
                               ),
+
                             ),
                     SizedBox(height: 10),
-                     SwitchTile(title: "Notification", settingKey: '', defaultValue: false, textColor: Colors.white),
 
+                    Material(
+                      color: Colors.transparent,
+                      child: SwitchListTile(
+                        tileColor: theme.cardTheme.color,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
+                        ),
+                        title: Text("Notification" ,style: theme.textTheme.titleMedium,),
+                        value: state.isNotificationsEnabled,
+                        onChanged: (val) {
+                          cubit.toggleNotifications(val);
+                        },
+                      ),
+
+                    )
                   ],
                 ),
               ),
@@ -74,7 +91,7 @@ class _settingsPageState extends State<settingsPage> {
               height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color:theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
@@ -82,28 +99,37 @@ class _settingsPageState extends State<settingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("CONTENT", style: GoogleFonts.roboto(color: Colors.grey, fontSize: 18)),
-                    Material(
-                      color: Colors.transparent,
-                      child: SwitchListTile(
+                    Text("CONTENT", style: theme.textTheme.titleMedium),
+                        Material(
+                        color: Colors.transparent,
+                        child: SwitchListTile(
+                        tileColor: theme.cardTheme.color,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
+                        borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
                         ),
-                        tileColor: Colors.grey.shade900,
-                        selectedTileColor: Colors.grey.shade900,
-                        title: Text("Auto Wallpaper Change", style: GoogleFonts.acme(color: Colors.white, fontSize: 18)),
-                        value: isAutoRotateOn,
+                        title: Text("Auto Wallpaper Change", style: theme.textTheme.titleMedium),
+                        value: state.isAutoWallpaperEnabled,
                         onChanged: (val) {
-                          setState(() {
-                            isAutoRotateOn = val;
-                          });
-                          print("Dark Mode toggled: $val");
+                          cubit.toggleAutoWallpaper(val);
                         },
                       ),
                     ),
                     SizedBox(height: 10),
-                    SwitchTile(title: "Clear Cache", settingKey: '', defaultValue: false, textColor: Colors.white),
 
+                          Material(
+                          color: Colors.transparent,
+                          child: SwitchListTile(
+                          tileColor: theme.cardTheme.color,
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
+                          ),
+                        title: Text("Clear Cache", style: theme.textTheme.titleMedium),
+                        value: state.isClearCache,
+                        onChanged: (val) {
+                          cubit.clearCache(val);
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -114,7 +140,7 @@ class _settingsPageState extends State<settingsPage> {
               height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
@@ -122,18 +148,17 @@ class _settingsPageState extends State<settingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("ABOUT", style: GoogleFonts.roboto(color: Colors.grey, fontSize: 18)),
+                    Text("ABOUT", style: theme.textTheme.titleMedium),
                   SizedBox(height: 10),
-                  Material(
-                    color: Colors.transparent,
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
-                      ),
-                      selectedTileColor: Colors.grey.shade900,
-                          tileColor: Colors.grey.shade900,
-                          title: Text("App Version", style: TextStyle(color: Colors.white, fontSize: 18)),
-                          subtitle: Text("version: 1.0.0", style: TextStyle(color: Colors.white70)),
+    Material(
+    color: Colors.transparent,
+    child: ListTile(
+    tileColor: theme.cardTheme.color,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
+    ),
+                          title: Text("App Version", style:theme.textTheme.titleMedium),
+                          subtitle: Text("version: 1.0.0", style: theme.textTheme.titleMedium),
                         ),
                   ),
                   ],
@@ -143,7 +168,9 @@ class _settingsPageState extends State<settingsPage> {
 
           ]
         ),
-      )
+      );
+  },
+)
 
       // ListView(
       //   children: [

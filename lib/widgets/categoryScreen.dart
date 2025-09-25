@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:wallpaper_app/bloc/wallhub_bloc.dart';
 import 'package:wallpaper_app/bloc/wallhub_event.dart';
 import 'package:wallpaper_app/bloc/wallhub_state.dart';
@@ -52,20 +51,18 @@ class _categoryWidgetState extends State<categoryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor:theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text(widget.category,style: GoogleFonts.acme(textStyle:TextStyle(
-            fontSize: 26,
-            color: Colors.white,
-            fontWeight: FontWeight.bold)),),
-        backgroundColor: Colors.black,
+        title: Text(widget.category,style: theme.textTheme.titleLarge,),
+        backgroundColor:theme.appBarTheme.backgroundColor,
         elevation: 15,
         actions: [
-          IconButton(
-            icon:Icon(Icons.search,color: Colors.white,size: 30,),
-            onPressed: (){},
-          )
+          // IconButton(
+          //   icon:Icon(Icons.search,color: theme.appBarTheme.iconTheme?.color,),
+          //   onPressed: (){},
+          // )
         ],
       ),
       body:Center(
@@ -186,6 +183,7 @@ class _categoryWidgetState extends State<categoryWidget> {
         child: FloatingActionButton(onPressed: (){
           onRefresh();
         },
+          tooltip: 'Load More',
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
               side: BorderSide(color: Colors.blueGrey,width: 1)

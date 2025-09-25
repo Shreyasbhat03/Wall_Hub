@@ -13,20 +13,18 @@ class _categoryPageState extends State<categoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return  Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text("Category",style: GoogleFonts.acme(textStyle:TextStyle(
-            fontSize: 25,
-            color: Colors.white,
-            fontWeight: FontWeight.bold)),),
-        backgroundColor: Colors.black,
+        title: Text("Category",style: theme.appBarTheme.titleTextStyle,),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 15,
         actions: [
-          IconButton(
-            icon:Icon(Icons.search,color: Colors.white,size: 30,),
-            onPressed: (){},
-          )
+          // IconButton(
+          //   icon:Icon(Icons.search,color: theme.appBarTheme.iconTheme?.color,),
+          //   onPressed: (){},
+          // )
         ],
       ),
       body:Center(
@@ -44,8 +42,6 @@ class _categoryPageState extends State<categoryPage> {
                       itemBuilder: (context,index){
                         return  InkWell(
                           onTap: () {
-                            // Handle category tap
-                            // You can navigate to a new page or perform any action you want
                             print("Category tapped: ${category[index]}");
                             Navigator.of(context).push(MaterialPageRoute(builder: (context) => categoryWidget(query: category[index], category: category[index],)));
                           },
@@ -53,6 +49,14 @@ class _categoryPageState extends State<categoryPage> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.shadowColor.withOpacity(0.2),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3), // changes position of shadow
+                                  ),
+                                ],
                                 image: DecorationImage(
                                   image: AssetImage("assets/${category[index]}.webp"),
                                   fit: BoxFit.cover,

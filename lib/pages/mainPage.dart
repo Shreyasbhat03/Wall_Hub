@@ -15,7 +15,6 @@ class mainPage extends StatefulWidget {
 }
 
 class _mainPageState extends State<mainPage> {
-
   int selectedNavIndex= 0;
   PageController pageController= PageController();
   void onNavBarTapped(BuildContext context, int index) {
@@ -28,6 +27,8 @@ class _mainPageState extends State<mainPage> {
   }
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocBuilder<NavbarCubit, NavigationState>(
   builder: (context, state) {
     return Scaffold(
@@ -48,20 +49,30 @@ class _mainPageState extends State<mainPage> {
       bottomNavigationBar:Theme(data: Theme.of(context).copyWith(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        hoverColor: Colors.white24,
+        hoverColor: theme.navigationBarTheme.iconTheme?.resolve({MaterialState.selected})?.color,
+
       ), child:
-      BottomNavigationBar(items: const<BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.image_outlined,),label: "Gallery"),
-        BottomNavigationBarItem(icon: Icon(Icons.category_outlined,),label: "Category"),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite,),label: "Favorite"),
-        BottomNavigationBarItem(icon: Icon(Icons.settings,),label: "Settings"),
-      ],
-        backgroundColor: Colors.black,
+      BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.image_outlined), label: "Gallery"),
+          BottomNavigationBarItem(icon: Icon(Icons.category_outlined), label: "Category"),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+        ],
+        backgroundColor: theme.navigationBarTheme.backgroundColor,
         currentIndex: state.selectedIndex,
-        selectedItemColor: Colors.lightBlue,
-        unselectedItemColor: Colors.white,
+        selectedItemColor: theme.navigationBarTheme.iconTheme
+            ?.resolve({MaterialState.selected})?.color,
+        unselectedItemColor: theme.navigationBarTheme.iconTheme
+            ?.resolve({})?.color,
+        selectedLabelStyle: theme.navigationBarTheme.labelTextStyle
+            ?.resolve({MaterialState.selected}),
+        unselectedLabelStyle: theme.navigationBarTheme.labelTextStyle
+            ?.resolve({}),
         type: BottomNavigationBarType.fixed,
-        onTap:(index)=> onNavBarTapped(context,index),))
+        onTap: (index) => onNavBarTapped(context, index),
+      )
+      )
      ,
 
     );

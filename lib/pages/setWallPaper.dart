@@ -86,8 +86,9 @@ class _setWallpaperPageState extends State<setWallpaperPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
         child: Column(
           children:[
@@ -104,7 +105,7 @@ class _setWallpaperPageState extends State<setWallpaperPage> {
             Container(
               height: 40,
               width: double.infinity,
-              color: Colors.black26,
+              color: theme.appBarTheme.backgroundColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,11 +113,11 @@ class _setWallpaperPageState extends State<setWallpaperPage> {
                   TextButton(
                     onPressed: (){
                       _showSetWallpaperDialog(context);
-                    }, child: Text("Set as",style: GoogleFonts.acme(fontSize: 20,color: Colors.white,fontWeight: FontWeight.w800),),
+                    }, child: Text("Set as",style: theme.textTheme.titleLarge,),
                   ),
                   Spacer(),
                   IconButton(
-                    icon: Icon(Icons.download_outlined,color: Colors.white,size: 30,),
+                    icon: Icon(Icons.download_outlined,color: theme.appBarTheme.iconTheme?.color,),
                     onPressed: (){},
                   ),
                 ],
