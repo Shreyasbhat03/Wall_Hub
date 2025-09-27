@@ -7,6 +7,7 @@ class SettingsState {
   final bool isClearCache;
   final String category;
   final String duration;
+  final String setAs;
 
   const SettingsState({
     required this.isDark,
@@ -15,6 +16,7 @@ class SettingsState {
     required this.isClearCache,
     required this.category,
     required this.duration,
+    this.setAs = "home",
   });
 
   SettingsState copyWith({
@@ -24,6 +26,7 @@ class SettingsState {
     bool? isClearCache,
     String? category,
     String? duration,
+    String? setAs,
   }) {
     return SettingsState(
       isDark: isDark ?? this.isDark,
@@ -32,6 +35,7 @@ class SettingsState {
       isClearCache: isClearCache ?? this.isClearCache,
       category: category ?? this.category,
       duration: duration ?? this.duration,
+      setAs: setAs ?? this.setAs,
     );
   }
 }

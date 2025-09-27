@@ -11,6 +11,7 @@ import "package:wallpaper_app/cubits/favorite/fav_cubit.dart";
 import "package:wallpaper_app/cubits/navBar/navbar_cubit.dart";
 import "package:wallpaper_app/cubits/setting/settings_cubit.dart";
 import "package:wallpaper_app/cubits/setting/settings_state.dart";
+import "package:wallpaper_app/notificationService/notification.dart";
 
 import "pages/mainPage.dart";
 
@@ -23,6 +24,7 @@ void main() async {
   Hive.registerAdapter(SettingsModelAdapter());
   final settingsBox= await Hive.openBox<SettingsModel>("Settings"); // ✅
   final settingService= SettingsService(settingsBox);
+  await NotificationService.initialize();
   runApp(myApp(settingsService: settingService,));
 }
 

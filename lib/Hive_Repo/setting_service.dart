@@ -15,6 +15,7 @@ class SettingsService {
             isAutowallpaperEnabled: false,
             category: "Nature",
             duration: "6h",
+            setAs: "home",
           );
 
   void updateTheme(bool isDark) {
@@ -40,6 +41,11 @@ class SettingsService {
 
   void updateCategory(String category) {
     final updated = currentSettings..category = category;
+    _settingsBox.put('settings', updated);
+  }
+
+  void updateSetAs(String setAs) {
+    final updated = currentSettings..setAs = setAs;
     _settingsBox.put('settings', updated);
   }
 

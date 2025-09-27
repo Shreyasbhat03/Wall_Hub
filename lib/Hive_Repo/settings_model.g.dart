@@ -23,13 +23,14 @@ class SettingsModelAdapter extends TypeAdapter<SettingsModel> {
       isAutowallpaperEnabled: fields[3] as bool?,
       category: fields[4] as String?,
       duration: fields[5] as String?,
+      setAs: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SettingsModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.isDark)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class SettingsModelAdapter extends TypeAdapter<SettingsModel> {
       ..writeByte(4)
       ..write(obj.category)
       ..writeByte(5)
-      ..write(obj.duration);
+      ..write(obj.duration)
+      ..writeByte(6)
+      ..write(obj.setAs);
   }
 
   @override

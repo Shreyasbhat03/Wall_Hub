@@ -15,6 +15,8 @@ class SettingsModel extends HiveObject{
   String? category;
   @HiveField(5)
   String? duration;
+  @HiveField(6)
+  String? setAs;
 
   SettingsModel(
   {  this.isDark=false,
@@ -22,7 +24,8 @@ class SettingsModel extends HiveObject{
     this.isClearCache=false,
     this.isAutowallpaperEnabled=false,
     this.category,
-    this.duration
+    this.duration,
+    this.setAs="home"
   }
       );
 
