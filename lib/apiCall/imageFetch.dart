@@ -5,7 +5,7 @@ import 'package:wallpaper_app/Hive_Repo/data_model.dart';
 
   Future<List<ImageModel>> fetchImages(String url) async {
     final Dio _dio = Dio();
-    final String _apiKey = 'KpypqyVYNL8OZWr85fntDOtaqFw8mSNROntncDDx56vubPnDbMiyt4Vm';
+    final String _apiKey = 'PUT YOUR API KEY FORM PEXEL ';
 
     try {
       final response = await _dio.get(
